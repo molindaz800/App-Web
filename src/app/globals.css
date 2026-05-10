@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #03060a;
+  color: #e8fbff;
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 216, 255, 0.18), transparent 30rem),
+    radial-gradient(circle at 78% 24%, rgba(255, 138, 61, 0.16), transparent 28rem),
+    linear-gradient(135deg, #020409 0%, #06131d 48%, #07070c 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: rgba(0, 216, 255, 0.35);
+}
+
+.noise {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  opacity: 0.13;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(125, 249, 255, 0.08) 0,
+    rgba(125, 249, 255, 0.08) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+}
+
+.hud-panel {
+  border: 1px solid rgba(125, 249, 255, 0.2);
+  background:
+    linear-gradient(135deg, rgba(6, 20, 31, 0.82), rgba(3, 8, 13, 0.68)),
+    radial-gradient(circle at top left, rgba(0, 216, 255, 0.13), transparent 18rem);
+  box-shadow: 0 0 40px rgba(0, 216, 255, 0.12), inset 0 0 40px rgba(0, 216, 255, 0.05);
+  backdrop-filter: blur(18px);
+}
+
+.amber-panel {
+  border-color: rgba(255, 138, 61, 0.32);
+  box-shadow: 0 0 40px rgba(255, 138, 61, 0.18), inset 0 0 36px rgba(255, 138, 61, 0.05);
+}
+
+.text-glow {
+  text-shadow: 0 0 18px rgba(0, 216, 255, 0.62);
+}
+
+.orange-glow {
+  text-shadow: 0 0 18px rgba(255, 138, 61, 0.62);
+}
+
+.grid-floor {
+  background-image:
+    linear-gradient(rgba(0, 216, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 216, 255, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 70%, transparent);
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 216, 255, 0.45) rgba(255, 255, 255, 0.04);
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 7px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 216, 255, 0.45);
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes orbital {
+  to {
+    transform: rotate(360deg);
+  }
+}
