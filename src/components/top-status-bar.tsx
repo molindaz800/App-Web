@@ -7,13 +7,14 @@ import { useNOVAIXStore } from "@/store/novaix-store";
 
 export function TopStatusBar() {
   const router = useRouter();
-  const setToken = useNOVAIXStore((state) => state.setToken);
+  const setAuthenticated = useNOVAIXStore((state) => state.setAuthenticated);
   const activeSystem = useNOVAIXStore((state) => state.activeSystem);
   const config = useNOVAIXStore((state) => state.config);
   const system = systems.find((item) => item.id === activeSystem) ?? systems[0];
 
-  function logout() {
-    setToken(null);
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setAuthenticated(false);
     router.push("/");
   }
 
@@ -37,7 +38,11 @@ export function TopStatusBar() {
             <ShieldCheck className="h-3.5 w-3.5" />
             Systems {systems.length}/12
           </div>
-          <button aria-label="Cerrar sesión" onClick={logout} className="flex h-10 w-10 items-center justify-center border border-slate-500/30 bg-white/5 text-slate-200 transition hover:border-danger hover:text-danger">
+          <button
+            aria-label="Cerrar sesión"
+            onClick={logout}
+            className="flex h-10 w-10 items-center justify-center border border-slate-500/30 bg-white/5 text-slate-200 transition hover:border-danger hover:text-danger"
+          >
             <LogOut className="h-4 w-4" />
           </button>
         </div>
