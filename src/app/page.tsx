@@ -9,17 +9,17 @@ import { useNOVAIXStore } from "@/store/novaix-store";
 export default function LoginPage() {
   const router = useRouter();
   const hydrateSession = useNOVAIXStore((state) => state.hydrateSession);
-  const token = useNOVAIXStore((state) => state.token);
+  const authenticated = useNOVAIXStore((state) => state.authenticated);
 
   useEffect(() => {
     hydrateSession();
   }, [hydrateSession]);
 
   useEffect(() => {
-    if (token) {
+    if (authenticated) {
       router.push("/os");
     }
-  }, [router, token]);
+  }, [router, authenticated]);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-void">
