@@ -14,10 +14,14 @@ export async function POST(request: Request) {
 
   const pool = getPool();
   if (pool) {
-    await pool.query(
-      "create table if not exists login_events (id bigserial primary key, username text not null, created_at timestamptz default now())"
-    );
-    await pool.query("insert into login_events (username) values ($1)", [username ?? "unknown"]);
+    try {
+      await pool.query(
+        "create table if not exists login_events (id bigserial primary key, username text not null, created_at timestamptz default now())"
+      );
+      await pool.query("insert into login_events (username) values ($1)", [username ?? "unknown"]);
+    } catch (error) {
+      console.warn("NOVAIX login event was not persisted because PostgreSQL is unavailable.", error);
+    }
   }
 
   if (username !== expectedUser || password !== expectedPassword) {
