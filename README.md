@@ -9,9 +9,6 @@ npm install
 npm run dev
 ```
 
-Default demo login:
+## Private access
 
-- User: `prime`
-- Password: `novaix`
-
-Create `.env.local` from `.env.example` to override credentials, JWT secret and PostgreSQL connection.
+Create `.env.local` from `.env.example` before running the app. NOVAIX OS will not authenticate anyone unless `NOVAIX_USER`, `NOVAIX_PASSWORD` and `JWT_SECRET` are configured.
