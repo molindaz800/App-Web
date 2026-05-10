@@ -18,12 +18,12 @@ export type BusinessConfig = {
 };
 
 type NOVAIXState = {
-  token: string | null | undefined;
+  authenticated: boolean | undefined;
   activeSystem: string;
   config: BusinessConfig;
   primeMood: "idle" | "alert" | "focused" | "orchestrating";
-  hydrateSession: () => void;
-  setToken: (token: string | null) => void;
+  hydrateSession: () => Promise<void>;
+  setAuthenticated: (authenticated: boolean) => void;
   setActiveSystem: (id: string) => void;
   updateConfig: (patch: Partial<BusinessConfig>) => void;
 };
@@ -43,32 +43,31 @@ const defaultConfig: BusinessConfig = {
 };
 
 export const useNOVAIXStore = create<NOVAIXState>((set, get) => ({
-  token: undefined,
+  authenticated: undefined,
   activeSystem: systems[0].id,
   config: defaultConfig,
   primeMood: "idle",
-  hydrateSession: () => {
+  hydrateSession: async () => {
     if (typeof window === "undefined") {
       return;
     }
 
-    const token = window.localStorage.getItem("novaix-token");
     const rawConfig = window.localStorage.getItem("novaix-config");
+    let authenticated = false;
+
+    try {
+      const response = await fetch("/api/auth/session", { cache: "no-store" });
+      authenticated = response.ok;
+    } catch {
+      authenticated = false;
+    }
+
     set({
-      token,
+      authenticated,
       config: rawConfig ? { ...defaultConfig, ...JSON.parse(rawConfig) } : defaultConfig
     });
   },
-  setToken: (token) => {
-    if (typeof window !== "undefined") {
-      if (token) {
-        window.localStorage.setItem("novaix-token", token);
-      } else {
-        window.localStorage.removeItem("novaix-token");
-      }
-    }
-    set({ token });
-  },
+  setAuthenticated: (authenticated) => set({ authenticated }),
   setActiveSystem: (id) => {
     const system = systems.find((item) => item.id === id);
     const pressure = system?.pressure ?? 0;
