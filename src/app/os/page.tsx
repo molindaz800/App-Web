@@ -13,7 +13,7 @@ import { useNOVAIXStore } from "@/store/novaix-store";
 export default function OperatingSystemPage() {
   const router = useRouter();
   const hydrateSession = useNOVAIXStore((state) => state.hydrateSession);
-  const token = useNOVAIXStore((state) => state.token);
+  const authenticated = useNOVAIXStore((state) => state.authenticated);
   const activeSystem = useNOVAIXStore((state) => state.activeSystem);
 
   useEffect(() => {
@@ -21,12 +21,12 @@ export default function OperatingSystemPage() {
   }, [hydrateSession]);
 
   useEffect(() => {
-    if (token === null) {
+    if (authenticated === false) {
       router.push("/");
     }
-  }, [router, token]);
+  }, [router, authenticated]);
 
-  if (!token) {
+  if (!authenticated) {
     return null;
   }
 
